@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}profile{% endblock %}
+{% block content %}
+    <h1>Profile</h1>
+    {% for label,value in context.items %}
+        <p>{{label}} : {{value}} </p>
+    {% endfor %}
+    <div class='container-lg justify-content-md-center'>
+        <div class ='row'>
+            <div class = 'col-2'>
+                rating
+            </div>
+            <div class='col-1'>
+                {{rating}}
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-2'>
+                Contests
+            </div>
+            <div class='col-1'>
+                {{num_contest}}
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-2'>
+                Max Up
+            </div>
+            <div class='col-1'>
+                {{maxup}}
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-2'>
+                Max Down
+            </div>
+            <div class='col-1'>
+                {{maxdown}}
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-2'>
+                Best Rank
+            </div>
+            <div class='col-1'>
+                {{best_rank}}
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-2'>
+                Worst Rank
+            </div>
+            <div class='col-1'>
+                {{worst_rank}}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

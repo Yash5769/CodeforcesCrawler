@@ -1,8 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import datetime
-
+from datetime import datetime,timezone,timedelta
+from dateutil import tz
+import pytz
+import time
+import django.utils.timezone as dt
+from .models import time_table
 
 def get_rating(handle):
     page = requests.get("https://codeforces.com/profile/" + handle)
@@ -34,3 +38,22 @@ def get_contests(handle):
         maxdown = maxdown if maxdown < delta else delta
     values = {"Number of contests":num_contest,"Max Up": maxup,"Max Down":maxdown,"Best Rank":best_rank,"Worst Rank":worst_rank}
     return values
+
+def get_timetable():
+    time_table.objects.all().delete()
+    page = requests.get("https://codeforces.com/contests")
+    soup = BeautifulSoup(page.content, "html.parser")
+    datatable = soup.find('div', class_="datatable")
+    rows = datatable.find_all('tr')
+    del rows[0]
+    for row in rows:
+        elements = row.find_all('td')
+        name = elements[0].text
+        writers = elements[1].text
+        d = (elements[2].text.strip()+" +0300")
+        date = datetime.strptime(d, "%b/%d/%Y %H:%M %z")
+        date = date.astimezone(tz.UTC)
+        a = time_table.objects.update_or_create(name = name, writers = writers, time = date)[0]
+        print(a.time)
+        a.save()
+

@@ -5,25 +5,22 @@
         {% for label,value in context.items %}
             <p>{{label}} : {{value}} </p>
         {% endfor %}
-        <div class='container-lg justify-content-md-center'>
-            {% for label,value in values.items %}
-            <div class ='row'>
-                <div class = 'col-2 border border-dark bg-white '>
-                    {{label}}
-                </div>
-                {% ifequal label "Max Up" %}
-                    <div class='col-1 border border-dark text-success bg-white'>
-                {% else %}
-                {% ifequal label "Max Down" %}
-                <div class='col-1 border border-dark text-danger bg-white'>
-                {% else %}
-                <div class='col-1 border border-dark bg-white'>
-                {% endifequal %}
-                {% endifequal %}
-                {{value}}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+        <div class ="w-50 p-3">
+        <table class="table table-striped">
+            <thead>
+                <tr class = "bg-primary">
+                    <th scope="col container-2">Field</th>
+                    <th scope="col container-1">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for label,value in values.items %}
+                <tr>
+                        <th scope="row">{{label}}</th>
+                        <td>{{value}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

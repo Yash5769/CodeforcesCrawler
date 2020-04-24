@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .forms import Handle
 from django.http import HttpResponseRedirect
 from . import scrape
+from . import Selenium_scraper
+from .models import time_table
 
 # Create your views here.
 def home(response):
@@ -35,4 +37,11 @@ def profile(response):
     #         del response.session[field.label]
     #     except KeyError:
     #         pass
-    return render(response,'login/profile.html',t)
+    return render(response, 'login/profile.html', t)
+    
+def contests(response):
+    scrape.get_timetable()
+    context = {"timetable": time_table.objects.all()}
+    # print(context)
+    # print(response.session['django_timezone'])
+    return render(response,'login/contests.html',context)

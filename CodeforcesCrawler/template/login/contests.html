@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Contests{% endblock %}
+{% block content %}
+    <h1>Contests</h1>
+    <table class="table table-striped table-dark table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Contest</th>
+                <th scope="col">Writers</th>
+                <th scope="col">Start</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contest in timetable %}
+                <tr>
+                    <th scope="row">{{contest.name}}</th>
+                    <td>{{contest.writers}}</td>
+                    <td>{{contest.time}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

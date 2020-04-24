@@ -1,0 +1,2 @@
+# CodeforcesCrawler
+Scrapes Codeforces info

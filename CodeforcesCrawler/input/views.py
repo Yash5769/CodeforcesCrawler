@@ -27,7 +27,7 @@ def profile(response):
         return HttpResponseRedirect("/login")
     for field in Handle():
         context.update({field.label: response.session.get(field.label)})
-    val = scrape.get_contests(context["Handle"])
+    val = {"values":scrape.get_contests(context["Handle"])}
     t = {"context":context,"rating":scrape.get_rating(context["Handle"])}
     t.update(val)
     # for field in Handle():

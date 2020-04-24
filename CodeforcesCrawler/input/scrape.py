@@ -32,5 +32,5 @@ def get_contests(handle):
         worst_rank = worst_rank if worst_rank > rank else rank
         maxup = maxup if maxup > delta else delta
         maxdown = maxdown if maxdown < delta else delta
-    value = {"num_contest":num_contest,"maxup": maxup,"maxdown":maxdown,"best_rank":best_rank,"worst_rank":worst_rank}
-    return value
+    values = {"Number of contests":num_contest,"Max Up": maxup,"Max Down":maxdown,"Best Rank":best_rank,"Worst Rank":worst_rank}
+    return values

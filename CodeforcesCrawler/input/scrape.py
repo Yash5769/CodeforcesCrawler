@@ -6,7 +6,7 @@ from dateutil import tz
 import pytz
 import time
 import django.utils.timezone as dt
-from .models import time_table
+from .models import time_table,languages,verdicts,level
 
 def get_rating(handle):
     page = requests.get("https://codeforces.com/profile/" + handle)
@@ -57,3 +57,39 @@ def get_timetable():
         print(a.time)
         a.save()
 
+# handle = "Yash57"
+def get_submission(handle):
+    languages.objects.all().delete()
+    verdicts.objects.all().delete()
+    level.objects.all().delete()
+    page = requests.get("https://codeforces.com/submissions/" + handle)
+    soup = BeautifulSoup(page.content,"html.parser")
+    div = soup.find_all('div', class_='pagination')[1]
+    ul = div.find('ul')
+    li = ul.find_all('li')
+    t = int(li[-2].text)
+    val = pd.Series()
+    ver = pd.Series()
+    lvl = pd.Series()
+    for i in range(t):
+        p = pd.read_html("https://codeforces.com/submissions/" + handle + "/page/" + str(i + 1))
+        table = p[5]
+        table['Verdict'] = [x[:3] for x in table['Verdict']]
+        table['Problem'] = [x[0] for x in table['Problem']]
+        val = val.combine(table['Lang'].value_counts(), (lambda x1, x2: x1 + x2), fill_value=0)
+        ver = ver.combine(table['Verdict'].value_counts(), (lambda x1, x2: x1 + x2), fill_value=0)
+        lvl = lvl.combine(table['Problem'].value_counts(),(lambda x1, x2: x1+x2),fill_value =0)
+    labels = val.index
+    for l in labels:
+        a = languages.objects.update_or_create(name = l,val = val[l])[0]
+        a.save()
+    labels = ver.index
+    for l in labels:
+        k = l
+        a = verdicts.objects.update_or_create(name = k,val = ver[l])[0]
+        a.save()
+    labels = lvl.index
+    for l in labels:
+        k = l
+        a = level.objects.update_or_create(name = k,val = lvl[l])[0]
+        a.save()
